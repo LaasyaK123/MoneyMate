@@ -1,0 +1,30 @@
+<!--Store this code in 'income.html' file inside the 'templates' folder-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title> income </title>
+		<link rel="stylesheet" href="../static/style.css"> 
+	</head>
+	<body>
+		<div class="registercontent" align="center">
+			<div class="registertop">
+				<h1>Income</h1>
+			</div></br></br>
+			<div class="registerbottom">
+			<form action="{{ url_for('income')}}" method="post" autocomplete="off">
+			<div class="msg">{{ msg }}</div>
+			<input type="text" name="transaction_type" placeholder="Enter Transaction Type" class="textbox" id="transaction_type" required></br></br>
+			<input type="text" name="transaction_detail" placeholder="Enter Transaction Detail" class="textbox" id="transaction_detail" required></br></br>
+			<input type="text" name="transaction_amount" placeholder="Enter Transaction Amount" class="textbox" id="transaction_amount" required></br></br>
+			<input type="text" name="transaction_date" placeholder="Enter Transaction Date" class="textbox" id="transaction_date" required></br></br>
+			<input type="submit" class="btn" value="Submit Income">
+			</form>
+			<br>
+            <br>
+            <br>
+            <br>
+            <a href="{{url_for('home')}}">Home</a></li>
+		</div>
+		</div>
+	</body>	
+</html>

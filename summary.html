@@ -1,0 +1,113 @@
+<!--Store this code in 'summary.html' file inside the 'templates' folder-->
+ 
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>summary</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<link rel="stylesheet" href="../static/style.css">
+    </head>
+    <body bgcolor="#e6ffee">
+        <div class="one">
+            <div class="two">
+                <h1>Menu</h1>
+                <ul>
+                    <li><a href="{{url_for('home')}}">Home</a></li>
+                    <li><a href="{{url_for('income')}}">Income</a></li>
+                    <li><a href="{{url_for('expenses')}}">Expenses</a></li>
+                    <li><a href="{{url_for('transactions')}}">Transactions</a></li>
+                    <li class="active"><a href="{{url_for('summary')}}">Summary</a></li>
+                    <li><a href="{{url_for('logout')}}">Log out</a></li>
+                </ul>
+            </div>
+            <div class="content" align="center">
+                <div class="topbar">
+                    <h2>Welcome!! You are in Summary Page!! </h2>                
+                </div> </br>
+            <div class="contentbar">
+                <h1>Summary of Balance and Spending</h1> </br>
+                {% block content %}
+                    <div class="border">
+                        <table class="worddark"></br>
+                            <tr>
+                                <td>Total Income:</td>
+                                <td>{{ account['total_income'] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Total Expenses:</td>
+                                <td>{{ account['total_expenses'] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Account Balance:</td>
+                                <td>{{ account['account_balance'] }}</td>
+                            </tr>                
+                        </table>
+                    </div>
+                    <table class="worddark"></br></br></br></br>
+                        <tr>
+                            <td><h3>Spending by Category</h3></td>
+                            <td><h3>Expenses by Category</h3></td>
+                        </tr>
+                        <tr>
+                            <td><canvas id="categoryChart"  class="smallChart"></canvas></td>
+                            <td><canvas id="expenseChart"  class="smallChart"></canvas></td>
+                        </tr>
+                    </table>   
+
+ 
+{% endblock %}   
+</div>
+</div>
+</div>
+
+
+     
+        <script>
+            // This code gathers data for Pie Chart
+            const categoryPercentages = JSON.parse('{{ category_percentages|tojson }}');
+            const categories = Object.keys(categoryPercentages);
+            const percentages = Object.values(categoryPercentages);
+     
+            // This code makes the front end of Pie Chart ( ex. backgroundcolor)
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(categoryCtx, {
+                type: 'pie',
+                data: {
+                    labels: categories,
+                    datasets: [{
+                        label: 'Spending Percentage',
+                        data: percentages,
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                    }]
+                }
+            });
+     
+            // Gathers data for Bar Chart
+            const expenseByCategory = JSON.parse('{{ expense_by_category|tojson }}');
+            const expenseCategories = Object.keys(expenseByCategory);
+            const expenseValues = Object.values(expenseByCategory);
+     
+            // Bar Chart
+            const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+            new Chart(expenseCtx, {
+                type: 'bar',
+                data: {
+                    labels: expenseCategories,
+                    datasets: [{
+                        label: 'Expenses ($)',
+                        data: expenseValues,
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+    </script>
+    </body>
+</html>

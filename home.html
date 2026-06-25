@@ -1,0 +1,78 @@
+<!--Store this code in 'home.html' file inside the 'templates' folder-->
+<html lang="en">
+	<head>
+		<title>home</title>
+		<link rel="stylesheet" href="../static/style.css">
+	</head>
+
+	<body bgcolor="#e6ffee">
+		<div class="one">
+			<div class="two">
+				<h1>Menu</h1>
+				<ul>
+					<li class="active"><a href="{{url_for('home')}}">Home</a></li>
+					<li><a href="{{url_for('income')}}">Income</a></li>
+					<li><a href="{{url_for('expenses')}}">Expenses</a></li>
+					<li><a href="{{url_for('transactions')}}">Transactions</a></li>
+					<li><a href="{{url_for('summary')}}">Summary</a></li>
+					<li><a href="{{url_for('logout')}}">Log out</a></li>
+				</ul>
+			</div>
+			<div class="content" align="center">
+				<div class="topbar">
+					<h2>Welcome!! You are in Home Page!! </h2>				 
+				</div></br></br>
+				<div class="contentbar">
+					<h1>Your Details</h1> </br>
+					{% block content %}
+						<div class="border">
+							<table class="worddark"></br>
+								<tr>
+									<td>Username:</td>
+									<td>{{ account['username'] }}</td>
+								</tr>
+								<tr>
+									<td>Firstname:</td>
+									<td>{{ account['firstname'] }}</td>
+								</tr>
+								<tr>
+									<td>Lastname:</td>
+									<td>{{ account['lastname'] }}</td>
+								</tr>
+								<tr>
+									<td>Email ID:</td>
+									<td>{{ account['email'] }}</td>
+								</tr>
+								<tr>
+									<td>School:</td>
+									<td>{{ account['school'] }}</td>
+								</tr>
+								<tr>
+									<td>Address:</td>
+									<td>{{ account['address'] }}</td>
+								</tr>
+								<tr>
+									<td>City:</td>
+									<td>{{ account['city'] }}</td>
+								</tr>
+								<tr>
+									<td>State:</td>
+									<td>{{ account['state'] }}</td>
+								</tr>
+								<tr>
+									<td>Country:</td>
+									<td>{{ account['country'] }}</td>
+								</tr>
+								<tr>
+									<td>Postal code:</td>
+									<td>{{ account['postalcode'] }}</td>
+								</tr>					 
+							</table>
+						</div>
+					{% endblock %}									 
+				</div>
+				
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,105 @@
+<!--Store this code in 'transactions.html' file inside the 'templates' folder-->
+
+<html lang="en">
+    <head>
+        <title>Transactions</title>
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+    <body bgcolor="#e6ffee">
+        <div class="one">
+            <div class="two">
+				<h1>Menu</h1>
+				<ul>
+					<li><a href="{{url_for('home')}}">Home</a></li>
+					<li><a href="{{url_for('income')}}">Income</a></li>
+					<li><a href="{{url_for('expenses')}}">Expenses</a></li>
+					<li class="active"><a href="{{url_for('transactions')}}">Transactions</a></li>
+					<li><a href="{{url_for('summary')}}">Summary</a></li>
+					<li><a href="{{url_for('logout')}}">Log out</a></li>
+				</ul>
+			</div>
+			<div class="content" align="center">
+                <div class="topbar">
+                    <h2>Welcome!! You are in Transactions Page!!</h2>                
+                </div> </br>
+                <div class="contentbar">
+                    <h1>Your Details</h1> </br>
+                    <input type="text" id="searchInput" placeholder="Search..." class="textbox" ></br>
+                    {% block content %}
+                        <div class="border">
+                            <table id="dataTable" border="1">
+                                <thead>
+                                    <tr>
+                                        <th>Edit</th>
+                                        <th>Transaction Category</th>
+                                        <th>Transaction Type</th>
+                                        <th>Transaction Detail</th>
+                                        <th>Transaction Amount</th>
+                                        <th>Transaction Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in rows %}
+                                    <tr>
+                                        <form method="POST" action="/edit_transaction/{{ row.transaction_id }}">
+                                            <td><input type="checkbox" onclick="toggleEdit(this)"></td>
+                                            <td class="transaction-category"><input type="text" name="transaction_category" value="{{ row.transaction_category }}" readonly></td>
+                                            <td class="transaction-type"><input type="text" name="transaction_type" value="{{ row.transaction_type }}" readonly></td>
+                                            <td class="transaction-detail"><input type="text" name="transaction_detail" value="{{ row.transaction_detail }}" readonly></td>
+                                            <td class="transaction-amount"><input type="text" name="transaction_amount" value="{{ row.transaction_amount }}" readonly></td>
+                                            <td class="transaction-date"><input type="text" name="transaction_date" value="{{ row.transaction_date }}" readonly></td>
+                                            <td>
+                                                <button type="submit">Edit</button>
+                                            </td>
+                                        </form>
+                                        <form method="POST" action="/delete_transaction/{{ row.transaction_id }}">
+                                            <td>
+                                                <button type="submit">Delete</button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endblock %}                                   
+                </div>
+            </div>
+        </div>
+        <script>
+            const searchInput = document.getElementById('searchInput');
+            const dataTable = document.getElementById('dataTable');
+
+            searchInput.addEventListener('keyup', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const rows = dataTable.getElementsByTagName('tr');
+                for (let i = 1; i < rows.length; i++) { // Skip the header row
+                    let match = false;
+                    const cells = rows[i].getElementsByTagName('td');
+                    for (let cell of cells) {
+                        const input = cell.getElementsByTagName('input')[0];
+                        if (input && input.value.toLowerCase().includes(searchTerm)) {
+                            match = true;
+                            break;
+                        }
+                    }
+                    rows[i].style.display = match ? '' : 'none';
+                }
+            });
+
+            function toggleEdit(checkbox) {
+                const form = checkbox.parentNode.parentNode;
+                const inputs = form.querySelectorAll('input[type="text"]');
+
+                inputs.forEach(input => {
+                    if (checkbox.checked) {
+                        input.removeAttribute('readonly');
+                    } else {
+                        input.setAttribute('readonly', true);
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
